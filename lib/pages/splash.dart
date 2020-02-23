@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qq_speed_box/spider/main.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -6,6 +7,10 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -23,10 +28,19 @@ class _SplashPageState extends State<SplashPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Image.network("https://game.gtimg.cn/images/speed/web201503/img/inside_logo.png", width: 100,),
+                  Image.network(
+                    "https://game.gtimg.cn/images/speed/web201503/img/inside_logo.png",
+                    width: 100,
+                  ),
                   Text(
                     "QQ Speed Box",
                     style: TextStyle(fontSize: 22),
+                  ),
+                  RaisedButton(
+                    child: Text('fetch'),
+                    onPressed: () {
+                      Spider spider = Spider();
+                    },
                   ),
                 ],
               ),

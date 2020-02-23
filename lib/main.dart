@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   MyApp() {
     // 请求主页数据
     // Application.
-    Spider spider = Spider();
+    // Spider spider = Spider();
     // 初始化路由
     Application.router = Router();
     Routes.configureRoutes(Application.router);
