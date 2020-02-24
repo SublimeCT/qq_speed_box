@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:qq_speed_box/pages/about.dart';
+import 'package:qq_speed_box/pages/videos.dart';
 import 'package:qq_speed_box/utils/Application.dart';
 
 import 'package:qq_speed_box/pages/Index.dart';
@@ -17,6 +19,8 @@ class Route {
   static Map<String, Route> routes = {
     "splash": Route("splash", "/", () => SplashPage()),
     "index": Route("index", "/index", () => IndexPage()),
+    "videos": Route("videos", "/videos", () => VideosPage()),
+    "about": Route("about", "/about", () => AboutPage()),
   };
 
   /// 注册路由

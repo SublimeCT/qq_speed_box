@@ -79,12 +79,56 @@ class Track {
 
   /// 按名称获取地图, 不存在时创建
   static Track ensureGet({@required String name, @required Series series}) {
-    String _name = name.trim();
-    if (Track.all[_name] == null) {
+    String _name = Track.formatName(name);
+    // print(name + " => " + _name);
+    if (!Track.all.containsKey(_name)) {
       Track.all[_name] = Track(name: _name, series: series);
-      print(_name);
     }
     return Track.all[_name];
+  }
+  /// 获取真实的地图名称, 处理帖子中的拼写错误
+  /// 
+  /// 😡 这是人干的活吗 ???
+  static String formatName(String text) {
+    return text.replaceAll(RegExp(r'[\s\*丶]'), "")
+      .replaceAll("（", "(")
+      .replaceAll("）", ")")
+      .replaceAll("duang", "Duang")
+      .replaceAll("冰山圆", "冰上圆")
+      .replaceAll("冰裂峡谷", "冰焰裂谷")
+      .replaceAll("深林", "森林")
+      .replaceAll("潘罗拉", "潘多拉")
+      .replaceAll("猫工场", "猫工厂")
+      .replaceAll("玄龄", "玄灵")
+      .replaceAll("龙血脉", "龙雪脉")
+      .replaceAll("神影之", "神影之")
+      .replaceAll("的八宝粥", "八宝粥")
+      .replaceAll("的八宝舟", "八宝粥")
+      .replaceAll("糖果密境", "糖果秘境")
+      .replaceAll("风火山林", "风林火山")
+      .replaceAll("飞越长城", "飞跃长城")
+      .replaceAll("繁花巴", "繁华巴")
+      .replaceAll("天国阶梯", "天国的阶梯")
+      .replaceAll("赤诚红叶", "赤城红叶")
+      .replaceAll("迷镜之缘", "迷境之缘")
+      .replaceAll("里约会", "里约奥运会")
+      .replaceAll("莲池幽静", "莲池幽径")
+      .replaceAll("落日海湾", "落日海港")
+      .replaceAll("落日港湾", "落日海港")
+      .replaceAll("忍者去哪了", "忍者去哪儿")
+      .replaceAll("春天的新乐想", "春天新乐想")
+      .replaceAll("里约**会", "里约奥运会")
+      .replaceAll("**马斯火山湖", "托马斯火山湖")
+      .replaceAll("II", "2")
+      .replaceAll("ii", "2")
+      .replaceAll("Ⅱ", "2")
+      .replaceAll("ⅱ", "2")
+      .replaceAll("ju", "巨")
+      .replaceAll("66公路", "66号公路")
+      .replaceAll("66hao公路", "66号公路")
+      .replaceAll(RegExp(r'^雪企鹅岛$'), "冰雪企鹅岛")
+      .replaceAll(RegExp(r'^马斯火山湖$'), "托马斯火山湖")
+      .replaceAll(RegExp("tuo"), "托");
   }
 }
 
@@ -109,6 +153,7 @@ class Video {
 
 /// (视频)记录
 class Record {
+  final RecordCategory category;
   final Track track;
   final String time;
   final String date;
@@ -120,13 +165,14 @@ class Record {
     @required this.date,
     @required this.video,
     @required this.author,
+    @required this.category,
   });
   static List<Record> all = [];
   /// 用于比较的 `time` 值
   int get compareTime => int.parse(time.replaceAll('.', ''));
   @override
   String toString() {
-    return "地图: ${track.name} | 记录: ${time} | 时间: ${date} | 作者: ${author} | 视频: ${video.originUrl}";
+    return "类目: ${category.toString()} | 地图: ${track.name} | 记录: ${time} | 时间: ${date} | 作者: ${author} | 视频: ${video.originUrl}";
   }
 }
 
@@ -210,10 +256,11 @@ class Article {
           String originUrl = a.attributes['href'];
           Record.all.add(
             Record(
-              track: Track.ensureGet(name: tr.children[0].text.trim(), series: at.series),
+              track: Track.ensureGet(name: tr.children[0].text, series: at.series),
               time: tr.children[2].text.trim(),
               date: tr.children[1].text.trim(),
               author: tr.children[3].text.trim(),
+              category: at.category,
               video: Video(
                 originUrl: originUrl,
               ),
@@ -664,14 +711,16 @@ class ArticleTable {
 }
 
 class Spider {
+  int startTime = 0;
+  int endTime = 0;
   Spider() {
     this.launch();
   }
   launch() async {
+    startTime = DateTime.now().millisecondsSinceEpoch;
     await Article.fetchAll();
     await Article.handle();
-    // Track.all.keys.forEach((String k) {
-    //   print(k);
-    // });
+    endTime = DateTime.now().millisecondsSinceEpoch;
+    Application.logger.d("爬取结束, 共获取记录 ${Record.all.length.toString()} 条; 地图 ${Track.all.length} 张; 耗时 ${(endTime - startTime) / 1000} 秒");
   }
 }

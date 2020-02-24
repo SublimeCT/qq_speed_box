@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qq_speed_box/spider/main.dart';
+import 'package:qq_speed_box/utils/Application.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -36,11 +37,22 @@ class _SplashPageState extends State<SplashPage> {
                     "QQ Speed Box",
                     style: TextStyle(fontSize: 22),
                   ),
-                  RaisedButton(
-                    child: Text('fetch'),
-                    onPressed: () {
-                      Spider spider = Spider();
-                    },
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text('fetch'),
+                        onPressed: () {
+                          Spider spider = Spider();
+                        },
+                      ),
+                      RaisedButton(
+                        child: Text('Enter'),
+                        onPressed: () {
+                          Application.router.navigateTo(context, "/index", clearStack: true);
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),

@@ -53,6 +53,10 @@ const Map<CarType, String> CarTypeMap = {
 
 /// 记录数据的类目
 class RecordCategory {
+
+  /// 显示在 `/videos` 页面的顶部 `TabTar` 组件中的名称
+  final String tabName;
+  
   /// 类型
   final RecordCategoryType type;
 
@@ -61,30 +65,36 @@ class RecordCategory {
 
   /// 是否改装
   final bool retrofit;
+
   /// 是否开启宝石
   final bool gem;
 
   const RecordCategory(
       {@required this.type,
       @required this.carType,
+      @required this.tabName,
       this.retrofit = true,
       this.gem = false});
 
-  static const TrackD = const RecordCategory(type: RecordCategoryType.Track, carType: CarType.D, retrofit: false);
-  static const TrackBR = const RecordCategory(type: RecordCategoryType.Track, carType: CarType.B);
+  toString() {
+    return "<${RecordCategoryTypeMap[type]} - ${CarTypeMap[carType]} - ${retrofit ? "🛠" : "❌🛠"} - ${gem ? "💎" : "❌💎"}>";
+  }
 
-  static const SpeedAR = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.D);
-  static const SpeedBR = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.B);
-  static const SpeedSRG = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.B, gem: true);
+  static const TrackD = const RecordCategory(type: RecordCategoryType.Track, carType: CarType.D, tabName: "赛王爵士", retrofit: false);
+  static const TrackBR = const RecordCategory(type: RecordCategoryType.Track, carType: CarType.B, tabName: "赛王B改装");
 
-  static const LimitS = const RecordCategory(type: RecordCategoryType.Limit, carType: CarType.S, retrofit: false);
-  static const LimitSR = const RecordCategory(type: RecordCategoryType.Limit, carType: CarType.S);
+  static const SpeedAR = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.D, tabName: "飞驰A改装有💎", gem: true);
+  static const SpeedBR = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.B, tabName: "飞驰B改装有💎", gem: true);
+  static const SpeedSRG = const RecordCategory(type: RecordCategoryType.Speed, carType: CarType.B, tabName: "飞驰S改装有💎", gem: true);
 
-  static const TopSpeedA = const RecordCategory(type: RecordCategoryType.TopSpeed, carType: CarType.A, retrofit: false);
-  static const TopSpeedAR = const RecordCategory(type: RecordCategoryType.TopSpeed, carType: CarType.A);
+  static const LimitS = const RecordCategory(type: RecordCategoryType.Limit, carType: CarType.S, tabName: "极限S原装", retrofit: false);
+  static const LimitSR = const RecordCategory(type: RecordCategoryType.Limit, carType: CarType.S, tabName: "极限S改装");
 
-  static const GraspD = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.D, retrofit: false);
-  static const GraspS = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.S, retrofit: false);
+  static const TopSpeedA = const RecordCategory(type: RecordCategoryType.TopSpeed, carType: CarType.A, tabName: "极速A原装", retrofit: false);
+  static const TopSpeedAR = const RecordCategory(type: RecordCategoryType.TopSpeed, carType: CarType.A, tabName: "极速A改装");
+
+  static const GraspD = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.D, tabName: "抓地爵士", retrofit: false);
+  static const GraspS = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.S, tabName: "抓地S", retrofit: false);
 }
 
 /// 可筛选的记录的类目集合
