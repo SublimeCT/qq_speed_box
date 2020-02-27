@@ -8,6 +8,18 @@
 - 基于 `flutter` 开发
 - 基于 [GPL 3.0](https://github.com/SublimeCT/qq_speed_box/blob/master/LICENSE) 开源协议, 仅用于学习和交流, 禁止直接用于商业用途
 
+## 界面
+
+### videos
+*暂无*
+
+### database
+![](/docs/images/screen_database_fold.jpeg)
+![](/docs/images/screen_database_unfold.jpeg)
+
+### about
+*暂无*
+
 ## 参考
 
 - 数据源
