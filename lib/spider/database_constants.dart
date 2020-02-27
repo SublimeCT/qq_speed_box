@@ -94,7 +94,7 @@ class RecordCategory {
   static const TopSpeedAR = const RecordCategory(type: RecordCategoryType.TopSpeed, carType: CarType.A, tabName: "极速A改装");
 
   static const GraspD = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.D, tabName: "抓地爵士", retrofit: false);
-  static const GraspS = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.S, tabName: "抓地S", retrofit: false);
+  static const GraspS = const RecordCategory(type: RecordCategoryType.Grasp, carType: CarType.S, tabName: "抓地原装S", retrofit: false);
 }
 
 /// 可筛选的记录的类目集合

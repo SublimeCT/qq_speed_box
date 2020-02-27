@@ -16,39 +16,39 @@ class Series {
   static const Ice = Series(
       name: "冰天雪地",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=1&raceImg=race01.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race01.jpg");
   static const Sea = Series(
       name: "阳光海滨",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=2&raceImg=race02.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race02.jpg");
   static const Forest = Series(
       name: "暮色森林",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race03.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race03.jpg");
   static const Scenic = Series(
       name: "世界名胜",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race04.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race04.jpg");
   static const Chinese = Series(
       name: "中国风",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race05.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race05.jpg");
   static const Street = Series(
       name: "古典老街",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race06.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race06.jpg");
   static const City = Series(
       name: "现代城市",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race07.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race07.jpg");
   static const Space = Series(
       name: "太空城",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race08.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race08.jpg");
   static const Country = Series(
       name: "幻想国度",
       banner:
-          "http://speed.qq.com/web201008/page/race_page.shtml?iTypeId=4&raceImg=race09.jpg");
+          "http://ossweb-img.qq.com/images/speed/web201008/images/race09.jpg");
 
   static List<Series> all = [
     Series.Ice,
@@ -710,16 +710,38 @@ class ArticleTable {
   ];
 }
 
+/// 爬虫请求状态
+enum SpiderState {
+  Padding,
+  Failed,
+  Success,
+}
+
 class Spider {
+  SpiderState state = SpiderState.Success;
   int startTime = 0;
   int endTime = 0;
-  Spider() {
-    this.launch();
+  Spider._();
+  static Spider _instance;
+  factory Spider() {
+    if (Spider._instance == null) {
+      Spider._instance = Spider._();
+    }
+    return Spider._instance;
   }
   launch() async {
+    state = SpiderState.Padding;
     startTime = DateTime.now().millisecondsSinceEpoch;
-    await Article.fetchAll();
-    await Article.handle();
+    try {
+      await Article.fetchAll();
+      await Article.handle();
+    } on Exception catch (exp) {
+      state = SpiderState.Failed;
+      endTime = DateTime.now().millisecondsSinceEpoch;
+      Application.logger.e("爬虫程序报错, 耗时 ${(endTime - startTime) / 1000} 秒 ", exp);
+      return;
+    }
+    state = SpiderState.Success;
     endTime = DateTime.now().millisecondsSinceEpoch;
     Application.logger.d("爬取结束, 共获取记录 ${Record.all.length.toString()} 条; 地图 ${Track.all.length} 张; 耗时 ${(endTime - startTime) / 1000} 秒");
   }

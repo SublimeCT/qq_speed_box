@@ -14,6 +14,7 @@
   - [QQ飞车官方论坛视频区](https://speed.gamebbs.qq.com/forum.php?mod=forumdisplay&fid=30673)
   - [官网系列/地图列表](http://speed.qq.com/web201008/page/race.shtml)
 - 编码
+  - [Provider / Consumer 的使用](https://blog.csdn.net/u013894711/article/details/102782366)
   - [List 常用 API 总结](https://blog.csdn.net/ffa_ijj/article/details/85051156)
   - [dartpad](https://dartpad.cn/)
   - [使用 PageView 实现 keep alive](https://zhuanlan.zhihu.com/p/58582876)
