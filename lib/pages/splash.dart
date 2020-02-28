@@ -10,6 +10,13 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
+    _initData();
+  }
+
+  Future<void> _initData() async {
+    await Future.delayed(Duration(seconds: 1));
+    Application.logger.d("初始化数据载入完毕 ...");
+    Application.router.navigateTo(context, "/index", clearStack: true);
   }
 
   @override
@@ -36,23 +43,6 @@ class _SplashPageState extends State<SplashPage> {
                   Text(
                     "QQ Speed Box",
                     style: TextStyle(fontSize: 22),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      RaisedButton(
-                        child: Text('fetch'),
-                        onPressed: () {
-                          Spider spider = Spider();
-                        },
-                      ),
-                      RaisedButton(
-                        child: Text('Enter'),
-                        onPressed: () {
-                          Application.router.navigateTo(context, "/index", clearStack: true);
-                        },
-                      ),
-                    ],
                   ),
                 ],
               ),

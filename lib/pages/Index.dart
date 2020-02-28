@@ -58,7 +58,6 @@ class _IndexPageState extends State<IndexPage> {
                 return Text('Loading ...');
               });
               Provider.of<RecordsModel>(context).fetchRecords().then((_) => _cancelFunc());
-              print('------- 重绘 Index 页面的 body 部分 --------');
             }
             fetchRecords = true;
             return PageView(
@@ -80,7 +79,6 @@ class _IndexPageState extends State<IndexPage> {
 
   void _onItemTapped(int index) {
     pageController.jumpToPage(index);
-    Application.logger.d("[Index page] 切换页面 -> " + index.toString());
   }
 
   void _onpageChanged(int index) {

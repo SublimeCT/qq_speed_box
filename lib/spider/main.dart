@@ -80,6 +80,7 @@ class Track {
   /// 按名称获取地图, 不存在时创建
   static Track ensureGet({@required String name, @required Series series}) {
     String _name = Track.formatName(name);
+    if (_name == "") return null;
     // print(name + " => " + _name);
     if (!Track.all.containsKey(_name)) {
       Track.all[_name] = Track(name: _name, series: series);
@@ -250,16 +251,21 @@ class Article {
         /// 填充 `Record.all`
         for (Dom.Element tr in table.querySelectorAll("tr")) {
           if (tr.children.length < 5) continue;
+          Track track = Track.ensureGet(name: tr.children[0].text, series: at.series);
+          String time = tr.children[2].text.trim();
+          String date = tr.children[1].text.trim();
+          String author = tr.children[3].text.trim();
+          if (track == null || time == "" || date == "" || author == "") continue;
           /// 视频 URL
           Dom.Element a = tr.children[4].querySelector("a");
           if (a == null || a.attributes == null) continue;
           String originUrl = a.attributes['href'];
           Record.all.add(
             Record(
-              track: Track.ensureGet(name: tr.children[0].text, series: at.series),
-              time: tr.children[2].text.trim(),
-              date: tr.children[1].text.trim(),
-              author: tr.children[3].text.trim(),
+              track: track,
+              time: time,
+              date: date,
+              author: author,
               category: at.category,
               video: Video(
                 originUrl: originUrl,
@@ -571,47 +577,47 @@ class ArticleTable {
 
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Ice,
         index: 14),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Sea,
         index: 11),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Forest,
         index: 9),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Scenic,
         index: 17),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Chinese,
         index: 13),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Street,
         index: 12),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.City,
         index: 10),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Space,
         index: 16),
     ArticleTable(
         article: Article.LimitArticle,
-        category: RecordCategory.LimitS,
+        category: RecordCategory.LimitSR,
         series: Series.Country,
         index: 15),
 
@@ -707,6 +713,27 @@ class ArticleTable {
         category: RecordCategory.TopSpeedAR,
         series: Series.Country,
         index: 16),
+
+    /// 抓地
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Ice, index: 5),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Sea, index: 2),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Forest, index: 0),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Scenic, index: 8),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Chinese, index: 4),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Street, index: 3),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.City, index: 1),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Space, index: 7),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspD, series: Series.Country, index: 6),
+
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Ice, index: 14),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Sea, index: 11),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Forest, index: 9),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Scenic, index: 17),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Chinese, index: 13),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Street, index: 12),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.City, index: 10),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Space, index: 16),
+    ArticleTable( article: Article.GraspArticle, category: RecordCategory.GraspS, series: Series.Country, index: 15),
   ];
 }
 
