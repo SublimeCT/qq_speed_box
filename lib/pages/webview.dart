@@ -27,10 +27,15 @@ class _WebviewPageState extends State<WebviewPage> {
     _injectJs();
   }
 
+  void dispose() {
+    super.dispose();
+    flutterWebviewPlugin.close();
+  }
+
   _injectJs() async {
     String script = await rootBundle.loadString("assets/js/video_handler.js");
     flutterWebviewPlugin.onStateChanged.listen((viewState) async {
-      Application.logger.d("注入 js ???");
+      // Application.logger.d("注入 js ???");
       if (viewState.type == WebViewState.finishLoad) {
         flutterWebviewPlugin.evalJavascript(script);
       }
@@ -39,7 +44,9 @@ class _WebviewPageState extends State<WebviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    Application.logger.d("加载 webview => $url");
     return WebviewScaffold(
+      debuggingEnabled: true,
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',
       url: url,
       appBar: AppBar(

@@ -100,6 +100,7 @@ class Track {
       .replaceAll("深林", "森林")
       .replaceAll("潘罗拉", "潘多拉")
       .replaceAll("猫工场", "猫工厂")
+      .replaceAll("冰风谷", "冰封谷")
       .replaceAll("玄龄", "玄灵")
       .replaceAll("龙血脉", "龙雪脉")
       .replaceAll("神影之", "神影之")
