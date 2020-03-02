@@ -189,8 +189,6 @@ enum VideoType {
 abstract class VideoTypeHandler {
   VideoType type;
   bool validate(String url);
-  /// 获取 id
-  Future<String> getID(String url);
   /// 根据 `getID()` 获取到的 `id` 生成链接
   Future<String> getUrlByID(String id);
   /// 检测视频是否有效

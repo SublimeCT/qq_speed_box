@@ -37,6 +37,23 @@
                 }
             }
         `
+        // static IFRAME_17173_SHEETS = `
+        //     body {
+        //         position: fixed;
+        //         top: 0;
+        //         left: 0;
+        //         bottom: 0;
+        //         right: 0;
+        //         background: #000;
+        //     }
+        //     .wrap {
+        //         position: fixed;
+        //         top: 0;
+        //         bottom: 0;
+        //         transform-origin: 0 50%;
+        //         transform: rotate(-90deg) translate(-50%, 50%);
+        //     }
+        // `
         constructor() {
             console.log('[video_handler script]: init VideoHandler class')
             this.init()
@@ -110,6 +127,15 @@
                 if (matchRes && matchRes[1]) {
                     location.href = `https://v.qq.com/txp/iframe/player.html?vid=${matchRes[1]}`
                 }
+            } else if (location.href.indexOf('http://v.17173.com/player_ifrm2/') === 0) {
+                // // 跳转到视频页后加入自定义样式
+                // const sheet = document.createTextNode(VideoHandler.IFRAME_17173_SHEETS)
+                // const el = document.createElement('style')
+                // el.id = 'toolkit-sheets'
+                // el.appendChild(sheet)
+                // document.getElementsByTagName('head')[0].appendChild(el)
+                // const wrap = document.querySelector('body > .wrap')
+                // if (!wrap) return
             }
         }
         generateVideo(url, poster) {

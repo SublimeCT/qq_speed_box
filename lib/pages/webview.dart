@@ -22,14 +22,29 @@ class _WebviewPageState extends State<WebviewPage> {
   final flutterWebviewPlugin = new FlutterWebviewPlugin();
   VideoPlayerController _videoPlayerController;
   final String _reportUrlPrefix = 'https://v.qq.com/video_url/';
-  String url;
+  String _url;
+  String get url {
+    if (_url != null &&
+        _url.indexOf(
+                'http://f.v.17173cdn.com/flash/PreloaderFileFirstpage.swf?cid=') ==
+            0) {
+      RegExp idMatchPattern = RegExp(r'\?cid=(\d|\w)+');
+      String res = idMatchPattern.stringMatch(_url);
+      if (res != null && res.length > 5) return "http://v.17173.com/player_ifrm2/${res.substring(5)}.html";
+      return _url;
+    } else {
+      return _url;
+    }
+  }
+
+  set url(u) => _url = u;
   String initTitle;
 
   /// webview 中视频加载完毕时上报的视频真实地址
   String _videoUrl;
   StreamSubscription<String> _onUrlChanged;
   StreamSubscription<WebViewStateChanged> _onStateChanged;
-  _WebviewPageState(this.url, this.initTitle);
+  _WebviewPageState(this._url, this.initTitle);
 
   @override
   void initState() {
@@ -130,9 +145,7 @@ class _WebviewPageState extends State<WebviewPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(initTitle),
-        actions: <Widget>[
-
-        ],
+        actions: <Widget>[],
       ),
       body: Center(
         child: _videoPlayerController.value.initialized
@@ -155,7 +168,9 @@ class _WebviewPageState extends State<WebviewPage> {
                 });
               },
               child: Icon(
-                _videoPlayerController.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                _videoPlayerController.value.isPlaying
+                    ? Icons.pause
+                    : Icons.play_arrow,
               ),
             ),
           ],
