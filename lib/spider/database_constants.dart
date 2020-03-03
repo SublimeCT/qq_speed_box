@@ -340,6 +340,10 @@ class MVQQTypeHandler {
 
 List<VideoTypeHandler> videoTypeHandler = [];
 
+const MOBILE_BBS_LINK = 'https://speed.gamebbs.qq.com/forum.php?mod=forumdisplay2&fid=30673';
+const USER_AGENT_MOBILE = 'Mozilla/5.0 (Linux; Android 5.1.1; Android SDK built for x86 Build/LMY48X) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36';
+const USER_AGENT_PC = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36';
+
 /// RecordCategory 对应的帖子 URL
 // const Map<RecordCategoryType, String> ArticleURLMap = {
 //   RecordCategoryType.Track: 'https://speed.gamebbs.qq.com/forum.php?mod=viewthread&tid=1663147',

@@ -1,10 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:qq_speed_box/spider/database_constants.dart';
 import 'package:qq_speed_box/utils/Application.dart';
 import 'package:video_player/video_player.dart';
 
@@ -95,13 +95,12 @@ class _WebviewPageState extends State<WebviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    Application.logger.d("加载 webview => $url");
     return _videoUrl != null
         ? _buildVideoPlayer()
         : WebviewScaffold(
             debuggingEnabled: true,
             userAgent:
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.122 Safari/537.36',
+                USER_AGENT_PC,
             url: url,
             appBar: AppBar(
               title: Text(initTitle),
