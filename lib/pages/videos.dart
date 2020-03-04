@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qq_speed_box/widgets/bbs_list.dart';
 import 'package:qq_speed_box/widgets/webview_bbs.dart';
 
 class VideosPage extends StatefulWidget {
@@ -13,7 +14,7 @@ class _VideosPageState extends State<VideosPage> {
       // appBar: AppBar(title: Text("Videos"),),
       body: Container(
         color: Colors.white70,
-        child: WebviewBBS(),
+        child: BBSList(),
       ),
     );
   }

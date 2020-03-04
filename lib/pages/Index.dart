@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:qq_speed_box/pages/about.dart';
 import 'package:qq_speed_box/pages/database.dart';
 import 'package:qq_speed_box/pages/videos.dart';
+import 'package:qq_speed_box/provider/bbs.dart';
 import 'package:qq_speed_box/provider/record_category.dart';
 import 'package:qq_speed_box/provider/records.dart';
 import 'package:qq_speed_box/spider/main.dart';
@@ -45,6 +46,9 @@ class _IndexPageState extends State<IndexPage> {
         ),
         ChangeNotifierProvider<RecordsModel>(
           create: (_) => RecordsModel(),
+        ),
+        ChangeNotifierProvider<BBSModel>(
+          create: (_) => BBSModel(),
         ),
       ],
       child: Scaffold(

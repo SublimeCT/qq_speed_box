@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as Dom;
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
+import 'package:qq_speed_box/models/bbs.dart';
 import 'package:qq_speed_box/spider/database_constants.dart';
 import 'package:qq_speed_box/utils/Application.dart';
 
@@ -216,7 +217,7 @@ class Article {
     });
     if (res.statusCode != 200) {
       Application.logger.e("获取帖子数据失败");
-      throw Exception("获取帖子数据失败");
+      // throw Exception("获取帖子数据失败");
     }
     return parse(res.body);
   }
@@ -229,6 +230,55 @@ class Article {
       return halder();
     }).toList();
     return Future.wait(requestQueue);
+  }
+  /// 开始获取论坛视频区帖子数据
+  static Future<Dom.Document> fetchBBS(int page) async {
+    String url = BBSArticle.getArticleURL(page);
+    http.Response res = await http.get(url, headers: {
+      'user-agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36'
+    });
+    if (res.statusCode != 200) {
+      Application.logger.e("获取论坛视频区帖子数据失败");
+      throw Exception("获取帖子数据失败");
+    }
+    return parse(res.body);
+  }
+
+  static handleBBS(Dom.Document dom) {
+    List<Dom.Element> posts = dom.querySelectorAll("#threadlist form#moderate > table > tbody");
+    bool existsSplitLine = !posts.any((Dom.Element p) => p.id == 'separatorline' || p.id == 'forumnewshow');
+    for (Dom.Element post in posts) {
+      if (existsSplitLine == false && post.id == 'separatorline') {
+        existsSplitLine = true;
+        continue;
+      }
+      if (!existsSplitLine) continue;
+      /// 有新回复的主题，点击查看
+      if (post.id == 'forumnewshow') continue;
+      Dom.Element titleEl = post.querySelector("tr > th > a");
+      String link = 'https://speed.gamebbs.qq.com/' + titleEl.attributes['href'];
+      String id = BBSArticle.getIdByLink(link);
+      if (BBSArticle.all.containsKey(id)) continue;
+      Dom.Element authorEl = post.querySelector(".by a");
+      Dom.Element createdAtEl = post.querySelector(".by > em");
+      String authorLink = authorEl.attributes['href'];
+      String authorName = authorEl.text;
+      Dom.Element categoryEl = post.querySelector("th > em > a");
+      Dom.Element replayEl = post.querySelector("tr > .num > a");
+      Dom.Element watchEl = post.querySelector("tr > .num > em");
+      BBSArticle.all[id] = BBSArticle(
+        id: id,
+        link: link,
+        authorID: BBSArticle.getAuthorIdByLink(authorLink),
+        authorName: authorName,
+        createdAt: createdAtEl.text,
+        category: categoryEl.text,
+        title: titleEl.text,
+        replay: replayEl.text,
+        watch: watchEl.text,
+      );
+    }
   }
 
   /// 开始处理数据
@@ -749,14 +799,14 @@ class Spider {
   SpiderState state = SpiderState.Success;
   int startTime = 0;
   int endTime = 0;
-  Spider._();
-  static Spider _instance;
-  factory Spider() {
-    if (Spider._instance == null) {
-      Spider._instance = Spider._();
-    }
-    return Spider._instance;
-  }
+  // Spider._();
+  // static Spider _instance;
+  // factory Spider() {
+  //   if (Spider._instance == null) {
+  //     Spider._instance = Spider._();
+  //   }
+  //   return Spider._instance;
+  // }
   launch() async {
     state = SpiderState.Padding;
     startTime = DateTime.now().millisecondsSinceEpoch;
@@ -772,5 +822,21 @@ class Spider {
     state = SpiderState.Success;
     endTime = DateTime.now().millisecondsSinceEpoch;
     Application.logger.d("爬取结束, 共获取记录 ${Record.all.length.toString()} 条; 地图 ${Track.all.length} 张; 耗时 ${(endTime - startTime) / 1000} 秒");
+  }
+  loadArticles(int page) async {
+    state = SpiderState.Padding;
+    startTime = DateTime.now().millisecondsSinceEpoch;
+    try {
+      final Dom.Document dom = await Article.fetchBBS(page);
+      await Article.handleBBS(dom);
+    } on Exception catch (exp) {
+      state = SpiderState.Failed;
+      endTime = DateTime.now().millisecondsSinceEpoch;
+      Application.logger.e("爬虫程序报错, 耗时 ${(endTime - startTime) / 1000} 秒 ", exp);
+      return;
+    }
+    state = SpiderState.Success;
+    endTime = DateTime.now().millisecondsSinceEpoch;
+    Application.logger.d("爬取结束, 已爬取论坛视频区帖子总数 ${BBSArticle.all.length.toString()} 条; 耗时 ${(endTime - startTime) / 1000} 秒");
   }
 }
