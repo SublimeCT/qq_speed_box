@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class BBSArticleState {}
 
 class BBSArticle {
+  static final String defaultTitleColor = '666666';
   static RegExp idPattern = RegExp(r'tid=(\d)+');
   static RegExp uidPattern = RegExp(r'uid=(\d)+');
   final String id;
@@ -21,6 +22,7 @@ class BBSArticle {
   final String lastReplaierID;
   final String lastReplayTime;
   final String category;
+  final String titleColor;
 
   BBSArticle(
       {@required this.id,
@@ -34,9 +36,13 @@ class BBSArticle {
       this.lastReplaier,
       this.lastReplaierID,
       this.lastReplayTime,
+      this.titleColor,
       @required this.category});
   String get authorAvatar => BBSArticle.getAvatar(authorID);
   String get lastReplierAvatar => BBSArticle.getAvatar(lastReplaierID);
+  Color get titleColorVal {
+    return Color(int.parse(titleColor, radix: 16) + 0xFF000000);
+  }
   static String getAvatar(String id) =>
       "https://ucenter.gamebbs.qq.com/avatar.php?uid=${id}&size=big";
   static String getArticleURL(int page) =>

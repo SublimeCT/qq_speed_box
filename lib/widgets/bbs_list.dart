@@ -7,6 +7,7 @@ import 'package:qq_speed_box/provider/bbs.dart';
 import 'package:qq_speed_box/spider/database_constants.dart';
 import 'package:qq_speed_box/utils/Application.dart';
 import 'package:qq_speed_box/widgets/post.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BBSList extends StatefulWidget {
   @override
@@ -15,6 +16,18 @@ class BBSList extends StatefulWidget {
 
 class _BBSListState extends State<BBSList> {
   bool _firstFetch = false;
+  ScrollController _postController;
+
+  @override
+  void initState() {
+    super.initState();
+    _postController = ScrollController();
+    _postController.addListener(() {
+      if (_postController.position.pixels == _postController.position.maxScrollExtent) {
+        BotToast.showText(text: '加载下一页(正在开发中) ...');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +57,17 @@ class _BBSListState extends State<BBSList> {
               BotToast.showText(text: "copy successful");
             },
           ),
+          IconButton(
+            tooltip: "复制链接",
+            icon: Icon(
+              Icons.open_in_browser,
+              color: Colors.white,
+            ),
+            onPressed: () async {
+              final bool _canLaunch = await canLaunch(MOBILE_BBS_LINK);
+              if (_canLaunch) launch(MOBILE_BBS_LINK);
+            },
+          ),
         ],
       ),
       body: Consumer(
@@ -55,6 +79,7 @@ class _BBSListState extends State<BBSList> {
           }
           return Container(
             child: ListView.builder(
+              controller: _postController,
               itemCount: Provider.of<BBSModel>(context).articleList.length,
               itemBuilder: (BuildContext context, int index) {
                 BBSArticle article =

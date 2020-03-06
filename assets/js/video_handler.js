@@ -37,6 +37,13 @@
                 }
             }
         `
+        static BBS_SHEETS = `
+            #video_button {
+                font-size: 45px;
+                border-radius: 7px;
+                margin-bottom: 35px;
+            }
+        `
         // static IFRAME_17173_SHEETS = `
         //     body {
         //         position: fixed;
@@ -136,7 +143,26 @@
                 // document.getElementsByTagName('head')[0].appendChild(el)
                 // const wrap = document.querySelector('body > .wrap')
                 // if (!wrap) return
+            } else if (location.href.indexOf('https://speed.gamebbs.qq.com/forum.php?mod=viewthread&tid=') === 0) {
+                const contextDom = document.querySelector('.plc .pct')
+                if (!contextDom) return
+                const article = contextDom.innerText
+                const urlMatchResult = article.match(/https:\/\/v\.qq\.com\/x\/page\/([\d\w]+).htm.*/) || article.match(/http:\/\/v\.qq\.com\/page\/.*\/([\d\w]+).htm.*/)
+                const embed = document.querySelector('embed')
+                const url = (embed && embed.src.indexOf('17173') > 0)
+                    ? embed.src
+                    : (urlMatchResult && urlMatchResult[0])
+                url && this.showVideoButton(url)
+                // location.href = url
             }
+        }
+        showVideoButton(url) {
+            const btn = document.createElement('button')
+            btn.id = 'video_button'
+            btn.innerText = '🎬 播放视频 >>>'
+            btn.addEventListener('click', evt => location.href = url)
+            this._addSheets(VideoHandler.BBS_SHEETS)
+            document.querySelector('.pcb').insertBefore(btn, document.querySelector('.pcb > div'))
         }
         generateVideo(url, poster) {
             const video = document.createElement('video')
@@ -145,6 +171,13 @@
             video.setAttribute('poster', poster)
             document.body.innerHTML = ''
             document.body.appendChild(video)
+        }
+        _addSheets(sheets) {
+            const sheet = document.createTextNode(sheets)
+            const el = document.createElement('style')
+            el.id = 'toolkit-sheets'
+            el.appendChild(sheet)
+            document.getElementsByTagName('head')[0].appendChild(el)
         }
     }
     if (document.readyState === 'complete') {

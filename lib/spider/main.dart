@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as Dom;
 import 'package:html/parser.dart';
@@ -186,6 +187,7 @@ class Article {
   Dom.Document document;
   Article({@required this.type, @required this.url, this.document});
 
+  static final RegExp titleColorPattern = RegExp(r'color:\s?#(\w{3,6})');
   static Article TrackArticle = Article(
       type: RecordCategoryType.Track,
       url: 'https://speed.gamebbs.qq.com/forum.php?mod=viewthread&tid=1663147');
@@ -277,8 +279,15 @@ class Article {
         title: titleEl.text,
         replay: replayEl.text,
         watch: watchEl.text,
+        titleColor: Article.getColorByDom(titleEl),
       );
     }
+  }
+
+  static String getColorByDom(Dom.Element d) {
+    RegExpMatch res = Article.titleColorPattern.firstMatch(d.attributes['style'] ?? '');
+    if (res == null || res.groupCount == 0) return BBSArticle.defaultTitleColor;
+    return res.group(1);
   }
 
   /// 开始处理数据
@@ -292,6 +301,10 @@ class Article {
     /// 根据 `ArticleTable.all` 整理每条记录
     for (Article article in Article.all) {
       List<Dom.Element> tables = article.document.querySelectorAll('.t_table');
+      if (tables.length == 0) {
+        BotToast.showText(text: '赛王数据获取失败！');
+        continue;
+      }
 
       /// 当前文章中包含的所有 table
       List<ArticleTable> currentTables =
