@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:qq_speed_box/pages/about.dart';
 import 'package:qq_speed_box/pages/database.dart';
+import 'package:qq_speed_box/pages/post.dart';
 import 'package:qq_speed_box/pages/webview.dart';
 import 'package:qq_speed_box/utils/Application.dart';
 
@@ -20,18 +21,38 @@ class Route {
   /// 路由结构
   static Map<String, Route> routes = {
     "splash": Route(
-        "splash", "/", (Map<String, dynamic> paramters) => SplashPage()),
-    "index": Route("index", "/index",
-        (Map<String, dynamic> paramters) => IndexPage()),
-    "videos": Route("videos", "/videos",
-        (Map<String, dynamic> paramters) => DatabasePage()),
-    "about": Route("about", "/about",
-        (Map<String, dynamic> paramters) => AboutPage()),
+      "splash",
+      "/",
+      (Map<String, dynamic> paramters) => SplashPage(),
+    ),
+    "index": Route(
+      "index",
+      "/index",
+      (Map<String, dynamic> paramters) => IndexPage(),
+    ),
+    "videos": Route(
+      "videos",
+      "/videos",
+      (Map<String, dynamic> paramters) => DatabasePage(),
+    ),
+    "post": Route("post", "/post/:id/:title", (Map<String, dynamic> paramters) {
+      return PostPage(
+        paramters['id'][0].toString(),
+        paramters['title'][0].toString(),
+      );
+    }, true),
+    "about": Route(
+      "about",
+      "/about",
+      (Map<String, dynamic> paramters) => AboutPage(),
+    ),
     "webview": Route("webview", "/webview/:url/:title",
         (Map<String, dynamic> paramters) {
-          return WebviewPage(paramters['url'][0].toString(), paramters['title'][0].toString());
-        }
-        , true),
+      return WebviewPage(
+        paramters['url'][0].toString(),
+        paramters['title'][0].toString(),
+      );
+    }, true),
   };
 
   /// 注册路由

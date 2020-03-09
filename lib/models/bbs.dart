@@ -6,8 +6,9 @@ class BBSArticleState {}
 
 class BBSArticle {
   static final String defaultTitleColor = '666666';
-  static RegExp idPattern = RegExp(r'tid=(\d)+');
-  static RegExp uidPattern = RegExp(r'uid=(\d)+');
+  static final RegExp idPattern = RegExp(r'tid=(\d)+');
+  static final RegExp uidPattern = RegExp(r'uid=(\d)+');
+  static final RegExp lastPagePattern = RegExp(r'\.\.\.\s+(\d{1,7})');
   final String id;
 
   /// article link, such as https://speed.gamebbs.qq.com/forum.php?mod=viewthread&tid=1706139&extra=page%3D1
@@ -60,4 +61,6 @@ class BBSArticle {
   }
 
   static LinkedHashMap<String, BBSArticle> all = LinkedHashMap();
+  /// 总页数
+  static int pageCount = 0;
 }

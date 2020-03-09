@@ -282,6 +282,14 @@ class Article {
         titleColor: Article.getColorByDom(titleEl),
       );
     }
+    // 记录总页数
+    Dom.Element lastPageEl = dom.querySelector('.last');
+    RegExpMatch res = BBSArticle.lastPagePattern.firstMatch(lastPageEl.text ?? '');
+    if (res == null || res.groupCount == 0) {
+      Application.logger.d("获取论坛视频区页数失败!");
+    } else {
+      BBSArticle.pageCount = int.parse(res.group(1));
+    }
   }
 
   static String getColorByDom(Dom.Element d) {
@@ -850,6 +858,6 @@ class Spider {
     }
     state = SpiderState.Success;
     endTime = DateTime.now().millisecondsSinceEpoch;
-    Application.logger.d("爬取结束, 已爬取论坛视频区帖子总数 ${BBSArticle.all.length.toString()} 条; 耗时 ${(endTime - startTime) / 1000} 秒");
+    Application.logger.d("爬取结束, 已爬取论坛视频区帖子总数 ${BBSArticle.all.length.toString()} 条; 获取第 $page / ${BBSArticle.pageCount} 页; 耗时 ${(endTime - startTime) / 1000} 秒");
   }
 }

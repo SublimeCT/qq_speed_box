@@ -7,7 +7,7 @@ class VideosPage extends StatefulWidget {
   _VideosPageState createState() => _VideosPageState();
 }
 
-class _VideosPageState extends State<VideosPage> {
+class _VideosPageState extends State<VideosPage> with AutomaticKeepAliveClientMixin<VideosPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,4 +18,6 @@ class _VideosPageState extends State<VideosPage> {
       ),
     );
   }
+
+  bool get wantKeepAlive => true;
 }

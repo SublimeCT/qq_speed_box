@@ -22,11 +22,6 @@ class _BBSListState extends State<BBSList> {
   void initState() {
     super.initState();
     _postController = ScrollController();
-    _postController.addListener(() {
-      if (_postController.position.pixels == _postController.position.maxScrollExtent) {
-        BotToast.showText(text: '加载下一页(正在开发中) ...');
-      }
-    });
   }
 
   @override
@@ -34,7 +29,7 @@ class _BBSListState extends State<BBSList> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text('视频区'),
+        title: BBSListTitle(),
         actions: <Widget>[
           IconButton(
             tooltip: "刷新",
@@ -43,7 +38,10 @@ class _BBSListState extends State<BBSList> {
               color: Colors.white,
             ),
             onPressed: () {
-              Application.logger.d('刷新视频区帖子');
+              BotToast.showText(text: '正在获取最新的帖子 ...');
+              if (Provider.of<BBSModel>(context, listen: false).isPadding) return;
+              Provider.of<BBSModel>(context, listen: false).fetchArticles(1);
+              _postController.jumpTo(0);
             },
           ),
           IconButton(
@@ -75,21 +73,46 @@ class _BBSListState extends State<BBSList> {
           if (!_firstFetch) {
             /// 加载
             Provider.of<BBSModel>(context).fetchArticles();
+            // 加载下一页
+            _postController.addListener(() {
+              if (_postController.position.pixels == _postController.position.maxScrollExtent) {
+                BotToast.showText(text: '加载中 ...');
+                if (Provider.of<BBSModel>(context, listen: false).isPadding) return;
+                Provider.of<BBSModel>(context, listen: false).fetchArticles();
+              }
+            });
             _firstFetch = true;
           }
           return Container(
-            child: ListView.builder(
-              controller: _postController,
-              itemCount: Provider.of<BBSModel>(context).articleList.length,
-              itemBuilder: (BuildContext context, int index) {
-                BBSArticle article =
-                    Provider.of<BBSModel>(context).articleList[index];
-                return Post(article: article);
-              },
+            child: Scrollbar(
+              child: ListView.builder(
+                controller: _postController,
+                itemCount: Provider.of<BBSModel>(context).articleList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  BBSArticle article =
+                      Provider.of<BBSModel>(context).articleList[index];
+                  return Post(article: article);
+                },
+              ),
             ),
           );
         },
       ),
     );
+  }
+}
+
+class BBSListTitle extends StatefulWidget {
+  @override
+  _BBSListTitleState createState() => _BBSListTitleState();
+}
+
+class _BBSListTitleState extends State<BBSListTitle> {
+  String get pageInfo {
+    return Provider.of<BBSModel>(context).page.toString() + ' / ' + Provider.of<BBSModel>(context).pageCount.toString();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Text("视频区 ($pageInfo)");
   }
 }

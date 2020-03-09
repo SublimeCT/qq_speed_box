@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.purple,
+          backgroundColor: Colors.white70,
         ),
         navigatorObservers: [BotToastNavigatorObserver()],
         home: SplashPage(),

@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:qq_speed_box/models/bbs.dart';
 import 'package:qq_speed_box/utils/Application.dart';
@@ -34,7 +35,14 @@ class Post extends StatelessWidget {
       ),
       onTap: () {
         print('点击进入帖子: ' + article.link);
-        Application.router.navigateTo(context, "/webview/${Uri.encodeComponent(article.link)}/${Uri.encodeComponent(article.title)}");
+        // Application.router.navigateTo(
+        //   context,
+        //   "/post/${Uri.encodeComponent(article.id)}/${Uri.encodeComponent(article.title)}",
+        // );
+        Application.router.navigateTo(
+          context,
+          "/webview/${Uri.encodeComponent(article.link)}/${Uri.encodeComponent(article.title)}",
+        );
       },
     );
   }
