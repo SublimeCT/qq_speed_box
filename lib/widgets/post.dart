@@ -38,6 +38,18 @@ class Post extends StatelessWidget {
         // Application.router.navigateTo(
         //   context,
         //   "/post/${Uri.encodeComponent(article.id)}/${Uri.encodeComponent(article.title)}",
+        //   transition: TransitionType.custom,
+        //   transitionBuilder: (BuildContext context, Animation<double> animation,
+        //       Animation<double> secondaryAnimation, Widget child) {
+        //     return ScaleTransition(
+        //       scale: animation,
+        //       child: RotationTransition(
+        //         turns: animation,
+        //         child: child,
+        //       ),
+        //     );
+        //   },
+        //   transitionDuration: const Duration(milliseconds: 800),
         // );
         Application.router.navigateTo(
           context,
@@ -95,31 +107,32 @@ class Post extends StatelessWidget {
 
   Widget _buildPost() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              // border: Border.all(color: Colors.cyanAccent, width: 1),
-              color: Colors.cyan.withAlpha(130)
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: Row(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  // border: Border.all(color: Colors.cyanAccent, width: 1),
+                  color: Colors.cyan.withAlpha(130)),
+              padding: EdgeInsets.fromLTRB(6, 0, 6, 3),
+              margin: EdgeInsets.only(right: 5),
+              child: Text(
+                article.category,
+                style: TextStyle(fontSize: titleLabelSize, color: Colors.white),
+              ),
             ),
-            padding: EdgeInsets.fromLTRB(6, 0, 6, 3),
-            margin: EdgeInsets.only(right: 5),
-            child: Text(
-              article.category,
-              style: TextStyle(fontSize: titleLabelSize, color: Colors.white),
+            Expanded(
+              child: Text(
+                article.title,
+                maxLines: 2,
+                style: TextStyle(
+                    fontSize: titleLabelSize,
+                    fontWeight: FontWeight.w600,
+                    color: article.titleColorVal),
+              ),
             ),
-          ),
-          Expanded(
-            child: Text(
-              article.title,
-              maxLines: 2,
-              style: TextStyle(fontSize: titleLabelSize, fontWeight: FontWeight.w600, color: article.titleColorVal),
-            ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
   Widget _buildStat() {
@@ -132,15 +145,27 @@ class Post extends StatelessWidget {
           size: statRowItemSize,
           semanticLabel: "回复数",
         ),
-        Text(article.replay, style: TextStyle(color: Colors.black38,),),
-        SizedBox(width: 20,),
+        Text(
+          article.replay,
+          style: TextStyle(
+            color: Colors.black38,
+          ),
+        ),
+        SizedBox(
+          width: 20,
+        ),
         Icon(
           Icons.textsms,
           color: Colors.black38,
           size: statRowItemSize,
           semanticLabel: "查看数",
         ),
-        Text(article.watch, style: TextStyle(color: Colors.black38,),),
+        Text(
+          article.watch,
+          style: TextStyle(
+            color: Colors.black38,
+          ),
+        ),
       ],
     );
   }
