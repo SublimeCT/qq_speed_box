@@ -1,6 +1,6 @@
 # qq_speed_box
 
-**⚠️ 本项目当前处于早期开发阶段, 如果你有好的 idea 或建议, 欢迎交流!**
+**⚠️ 本项目基础功能已完成, 如果你有好的 idea 或建议, 欢迎交流!**
 
 ## 简介
 - 这是一个 **QQ飞车(端游)** 赛王记录的爬虫 APP, 基于 `flutter` 开发, 主要用于数据(视频)展示, 您可以更加方便地查看所有的赛王记录
@@ -11,10 +11,10 @@
 
 页面 | 路由 | 说明 | 进度 | 截图
 --- |--- |--- |--- |---
-视频中心 | `/videos` | 展示官方论坛视频区最新数据 | *待开发* | <img style="max-width: 150px" src="/docs/images/videos_main.jpeg" alt="首页">
-赛王数据 - 折叠 | `/database` | 展示所有审核通过的赛王记录 | *开发中* | <img style="max-width: 150px" src="/docs/images/screen_database_fold.jpeg" alt="折叠">
-赛王数据 - 展开 | `/database` | 展示所有审核通过的赛王记录 | *开发中* | <img style="max-width: 150px" src="/docs/images/screen_database_unfold.jpeg" alt="展开">
-赛王数据 - 播放页 | `/database` | 由于官方人员疏忽, 录入了很多错误链接;还有 `17173 flash` 的视频链接因为无法溯源, 且 `webview` 不支持,我也懒得引入 `flash`, 所以早期的 `flash`视频无法播放 👊 | *开发中* | <img style="max-width: 150px" src="/docs/images/screen_database_video_player.jpeg" alt="播放页">
+视频中心 | `/videos` | 展示官方论坛视频区最新数据 | *已完成* | <img style="max-width: 150px" src="/docs/images/videos_main.jpeg" alt="首页">
+赛王数据 - 折叠 | `/database` | 展示所有审核通过的赛王记录 | *已完成* | <img style="max-width: 150px" src="/docs/images/screen_database_fold.jpeg" alt="折叠">
+赛王数据 - 展开 | `/database` | 展示所有审核通过的赛王记录 | *已完成* | <img style="max-width: 150px" src="/docs/images/screen_database_unfold.jpeg" alt="展开">
+赛王数据 - 播放页 | `/database` | 由于官方人员疏忽, 录入了很多错误链接;还有 `17173 flash` 的视频链接因为无法溯源, 且 `webview` 不支持,我也懒得引入 `flash`, 所以早期的 `flash`视频无法播放 👊 | *已完成* | <img style="max-width: 150px" src="/docs/images/screen_database_video_player.jpeg" alt="播放页">
 关于 | `/about` | app 信息 | *待开发* |
 
 ## 参考
